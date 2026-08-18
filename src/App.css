@@ -1,0 +1,131 @@
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: radial-gradient(circle at top right, #d9e3f5, transparent 400px),
+    radial-gradient(circle at top left, #b1c6ff, transparent 400px),
+    #f4f7ff;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  margin: 0 24px;
+}
+
+nav h1 {
+  color: #003068;
+  font-weight: 900;
+  font-size: 24px;
+}
+
+nav .btn {
+  padding: 8px 16px;
+  text-decoration: none;
+  margin-left: 16px;
+  border-radius: 4px;
+}
+
+nav .login {
+  color: #003068;
+  border: 1px solid #003068;
+}
+
+nav .login:hover {
+  color: #001b39;
+  background-color: #f7f7f7;
+}
+
+nav .register {
+  background-color: #003068;
+  color: #f7f7f7;
+}
+
+nav .register:hover {
+  background-color: #001b39;
+  color: #f7f7f7;
+}
+
+.heading {
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 48px 24px;
+}
+
+.heading h1,
+.heading p {
+  margin: 12px;
+}
+
+.heading p {
+  color: #818181;
+  font-size: 1.2rem;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  /* margin-top: 48px; */
+  margin: 72px 24px;
+}
+
+.content .box {
+  background-color: #ffffff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 16px;
+}
+
+.content .box:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transform: translateY(-4px);
+  /* transition: all 0.3s ease-in-out; */
+}
+
+.box .icon-box {
+  width: 55px;
+  height: 55px;
+  margin-bottom: 16px;
+  border-radius: 12%;
+  overflow: hidden;
+}
+
+.box .icon-box.bg-blue-light {
+  background-color: #e0f0ff;
+}
+
+.box .icon-box.bg-orange-light {
+  background-color: #fff3e0;
+}
+
+.box .icon-box.bg-purple-light {
+  background-color: #f0e0ff;
+}
+
+.box h5 {
+  margin: 8px 0;
+  font-size: 1.4rem;
+  color: #000102;
+}
+
+.box p {
+  color: #818181;
+  font-size: 1rem;
+  text-align: justify;
+}
+
+
+@media (max-width: 768px) {
+  nav {
+    margin: 0 12px;
+  }
+
+  .content {
+    flex-direction: column;
+    align-items: center;
+    margin: 0 12px;
+  }
+}

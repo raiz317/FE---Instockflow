@@ -1,0 +1,477 @@
+.sidebar-container {
+    width: 250px;
+    height: 100vh;
+    background-color: #1e293b;
+    color: #ffffff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.sidebar-container *,
+.sidebar-container *::before,
+.sidebar-container *::after {
+    box-sizing: border-box;
+}
+
+.sidebar-brand {
+    padding: 30px 24px 20px 24px;
+    text-align: left !important;
+}
+
+.sidebar-brand h4 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+}
+
+.sidebar-brand h4 img {
+    width: 28px;
+    height: auto;
+    border-radius: 4px;
+}
+
+.sidebar-nav {
+    flex-grow: 1;
+    justify-content: flex-start;
+    align-items: flex-start;
+    /* width: 100%; */
+    margin: 0;
+    text-align: left !important;
+}
+
+.sidebar-nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    text-align: left !important;
+}
+
+.sidebar-nav li {
+    width: 100%;
+    padding: 0;
+    margin: 4px 0;
+    text-align: left !important;
+}
+
+/* Gaya Link Menu Utama */
+.sidebar-link {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 14px 24px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    border-left: 4px solid transparent;
+    transition: all 0.2s ease-in-out;
+}
+
+.sidebar-link:hover {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.04);
+    padding-left: 28px;
+}
+
+.sidebar-link.active {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.08);
+    border-left: 4px solid #3b82f6;
+}
+
+.sidebar-footer {
+    padding: 20px 20px 30px 20px;
+    border-top: 1px solid #334155;
+    width: 100%;
+}
+
+.user-dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.dropdown-toggle-btn {
+    width: 100%;
+    padding: 12px 16px;
+    background-color: #ffffff;
+    color: #0f172a;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.profile-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #e2e8f0;
+}
+
+.user-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dropdown-menu-list {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 6px 0;
+    margin: 0;
+    list-style: none;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.15);
+
+    display: none;
+}
+
+.user-dropdown:hover .dropdown-menu-list {
+    display: block;
+}
+
+.dropdown-item-link {
+    color: #334155;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    transition: background-color 0.15s ease;
+}
+
+.dropdown-item-link:hover {
+    background-color: #f1f5f9;
+}
+
+.dropdown-item-link.text-danger {
+    color: #ef4444;
+}
+
+.dropdown-item-link.text-danger:hover {
+    background-color: #fee2e2;
+}
+
+.dropdown-item-link.text-danger:active {
+    background-color: #dc3545;
+    color: #ffffff !important;
+}
+
+/* .sidebar-container {
+    width: 250px;
+    height: 100vh;
+    background-color: #1e293b;
+    color: #ffffff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.sidebar-container *,
+.sidebar-container *::before,
+.sidebar-container *::after {
+    box-sizing: border-box;
+}
+
+.sidebar-brand {
+    padding: 30px 24px 20px 24px;
+    text-align: left !important;
+}
+
+.sidebar-brand h4 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+}
+
+.sidebar-brand h4 img {
+    width: 28px;
+    height: auto;
+}
+
+.sidebar-nav {
+    flex-grow: 1;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin: 0;
+    text-align: left !important;
+}
+
+.sidebar-nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    text-align: left !important;
+}
+
+.sidebar-nav li {
+    width: 100%;
+    padding: 0;
+    margin: 4px 0;
+    text-align: left !important;
+}
+
+.sidebar-link {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 14px 24px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    border-left: 4px solid transparent;
+    transition: all 0.2s ease-in-out;
+}
+
+.sidebar-link:hover {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.04);
+    padding-left: 28px;
+}
+
+.sidebar-link.active {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.08);
+    border-left: 4px solid #3b82f6;
+}
+
+.sidebar-footer {
+    padding: 20px 20px 30px 20px;
+    border-top: 1px solid #334155;
+    width: 100%;
+}
+
+.user-dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.dropdown-toggle-btn {
+    width: 100%;
+    padding: 12px 16px;
+    background-color: #ffffff;
+    color: #0f172a;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.profile-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #e2e8f0;
+}
+
+.user-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dropdown-menu-list {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 6px 0;
+    margin: 0;
+    list-style: none;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.15);
+    display: none;
+}
+
+.user-dropdown:hover .dropdown-menu-list {
+    display: block;
+}
+
+.dropdown-item-link {
+    color: #334155;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    transition: background-color 0.15s ease;
+}
+
+.dropdown-item-link:hover {
+    background-color: #f1f5f9;
+}
+
+.dropdown-item-link.text-danger {
+    color: #ef4444;
+}
+
+.dropdown-item-link.text-danger:hover {
+    background-color: #fee2e2;
+}
+
+.dropdown-item-link.text-danger:active {
+    background-color: #dc3545;
+    color: #ffffff !important;
+} */
+
+@media (max-width: 768px) {
+
+    .sidebar-container {
+        width: 100%;
+        height: 60px;
+        position: fixed;
+        top: 0;
+        bottom: auto;
+        left: 0;
+        flex-direction: row;
+        padding-top: 0;
+        border-right: none;
+        border-top: 1px solid #334155;
+        box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.15);
+        gap: 4px;
+    }
+
+    .sidebar-brand {
+        display: none;
+    }
+
+    .sidebar-nav {
+        height: 100%;
+    }
+
+    .sidebar-nav ul {
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+    }
+
+    .sidebar-nav li {
+        margin: 0;
+        height: 100%;
+        flex: 1;
+        padding: 0;
+    }
+
+    .sidebar-link {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2px;
+        padding: 8px 0;
+        font-size: 11px;
+        height: 100%;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+    }
+
+    .sidebar-link i {
+        font-size: 18px;
+    }
+
+    .sidebar-link:hover {
+        padding-left: 0;
+        /* Matikan efek geser kanan desktop */
+        background-color: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Indikator aktif di HP pindah ke bagian bawah */
+    .sidebar-link.active {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-left: none;
+        border-bottom: 3px solid #3b82f6;
+    }
+
+    /* Bagian profil user disesuaikan ukurannya di HP */
+    .sidebar-footer {
+        width: auto;
+        padding: 0 16px;
+        border-top: none;
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
+
+    /* Tombol profil mengecil dan hanya memunculkan lingkaran avatarnya saja */
+    .dropdown-toggle-btn {
+        background-color: transparent;
+        box-shadow: none;
+        padding: 0;
+        width: 36px;
+        height: 36px;
+        justify-content: center;
+    }
+
+    .profile-avatar {
+        width: 32px;
+        height: 32px;
+    }
+
+    /* Sembunyikan teks nama user agar muat di HP */
+    .user-name {
+        display: none;
+    }
+
+    /* Posisi kotak melayang daftar menu dropdown diatur ulang */
+    .dropdown-menu-list {
+        bottom: calc(100% + 12px);
+        right: 0;
+        /* Merapat ke kanan layar */
+        left: auto;
+        width: 160px;
+        /* Lebar menu dropdown yang ideal di HP */
+    }
+}
