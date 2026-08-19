@@ -1,11 +1,19 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import '../styles/sidebar.css';
 import Instockflow from '../assets/Instockflow.jpg';
 import IconProfil from '../assets/icon.png'
 
 function Sidebar(props) {
+    const { user, onLogout } = props;
+    const navigate = useNavigate();
     const location = useLocation();
+
+    const handleLogoutClick = () => {
+        onLogout();
+        navigate('/login');
+
+    };
 
     return (
         <div className="sidebar-container">
@@ -15,7 +23,6 @@ function Sidebar(props) {
                 </h4>
             </div>
 
-            {/* Bagian Navigasi Menu */}
             <nav className="sidebar-nav">
                 <ul>
                     <li>
@@ -63,9 +70,23 @@ function Sidebar(props) {
                             </Link>
                         </li>
                         <li>
-                            <Link className="dropdown-item-link text-danger" to="/logout">
+                            <button
+                                className="dropdown-item-link text-danger"
+                                onClick={handleLogoutClick}
+                                style={{
+                                    width: '100%',
+                                    textAlign: 'left',
+                                    background: 'none',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    padding: '8px 16px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '10px'
+                                }}
+                            >
                                 <i className="bi bi-box-arrow-left"></i> Logout
-                            </Link>
+                            </button>
                         </li>
                     </ul>
                 </div>

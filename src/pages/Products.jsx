@@ -10,7 +10,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 function Products(props) {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const name = "Budi";
 
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editingProduct, setEditingProduct] = useState({
@@ -22,7 +21,8 @@ function Products(props) {
         supplier: ""
     });
 
-    const { products, setProducts, suppliers } = props;
+    const { products, setProducts, suppliers, user, onLogout } = props;
+    const name = user ? user.username : "Pengguna";
     const [newProduct, setNewProduct] = useState({
         name: "",
         category: "",
@@ -55,7 +55,7 @@ function Products(props) {
         })
     }
 
-    function handleFormSubmit(event) {
+    async function handleFormSubmit(event) {
         event.preventDefault();
 
         if (!newProduct.name || !newProduct.category || !newProduct.stock || !newProduct.price || !newProduct.supplier) {
@@ -63,7 +63,31 @@ function Products(props) {
             return;
         }
 
-        setProducts(prevProducts => {
+        try {
+            const response = await fetch('http://localhost:3000/api/products', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: newProduct.name,
+                    category: newProduct.category,
+                    stock: Number(newProduct.stock),
+                    price: Number(newProduct.price),
+                    supplier: newProduct.supplier
+                })
+            });
+
+            if (!response.ok) throw new Error('Gagal menambah produk');
+            const insertedProduct = await response.json();
+
+            setProducts(prevProducts => [...prevProducts, insertedProduct]);
+            setNewProduct({ name: '', category: '', stock: '', price: '', supplier: '' });
+            setIsModalOpen(false)
+        } catch (error) {
+            console.error(error);
+            alert('Gagal menambah produk ke server')
+        }
+
+        /*setProducts(prevProducts => {
             return [
                 ...prevProducts,
                 {
@@ -77,7 +101,7 @@ function Products(props) {
             ];
         });
         setNewProduct({ name: "", category: "", stock: "", price: "", supplier: "" });
-        setIsModalOpen(false);
+        setIsModalOpen(false);*/
     }
 
     function openEditModal(product) {
@@ -93,10 +117,45 @@ function Products(props) {
         }));
     }
 
-    function handleEditFormSubmit(event) {
+    async function handleEditFormSubmit(event) {
         event.preventDefault();
 
-        setProducts(prevProducts => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/products/${editingProduct.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: editingProduct.name,
+                    category: editingProduct.category,
+                    stock: Number(editingProduct.stock),
+                    price: Number(editingProduct.price),
+                    supplier: editingProduct.supplier
+                })
+            });
+
+            if (!response.ok) throw new Error('Gagal mengedit produk');
+
+            setProducts(prevProducts => {
+                return prevProducts.map(item => {
+                    if (item.id === editingProduct.id) {
+                        return {
+                            id: editingProduct.id,
+                            name: editingProduct.name,
+                            category: editingProduct.category,
+                            stock: Number(editingProduct.stock),
+                            price: Number(editingProduct.price),
+                            supplier: editingProduct.supplier
+                        };
+                    }
+                    return item;
+                });
+            });
+            setIsEditModalOpen(false);
+        } catch (error) {
+            console.error(err);
+            alert("Gagal memperbarui produk di server.");
+        }
+        /*setProducts(prevProducts => {
             return prevProducts.map(item => {
                 if (item.id === editingProduct.id) {
                     return {
@@ -110,16 +169,23 @@ function Products(props) {
                 }
                 return item;
             });
-        });
-        setIsEditModalOpen(false);
+        });*/
     }
 
-    function deleteProduct(id) {
-        setProducts(prevProducts => {
-            return prevProducts.filter((item, index) => {
-                return index !== id
-            })
-        })
+    async function deleteProduct(id) {
+        if (!window.confirm('Apakah anda yakin ingin menghapus produk ini?')) return;
+
+        try {
+            const response = await fetch(`http://localhost:3000/api/products/${id}`, {
+                method: 'DELETE'
+            });
+
+            if (!response.ok) throw new Error('Gagal menghapus produk');
+            setProducts(prevProducts => prevProducts.filter(item => item.id !== id));
+        } catch (error) {
+            console.error(err);
+            alert("Gagal menghapus produk dari server.");
+        }
     }
 
     const filteredProducts = products.filter(product => {
@@ -135,7 +201,7 @@ function Products(props) {
 
     return (
         <div>
-            <Sidebar user={name} />
+            <Sidebar user={name} onLogout={onLogout} />
             <div className='product-content'>
                 <div className='header-product'>
                     <h2>Product Management</h2>
@@ -233,7 +299,7 @@ function Products(props) {
                                                 <IconButton className="btn-edit-product" onClick={() => openEditModal(product)}>
                                                     <EditIcon />
                                                 </IconButton>
-                                                <IconButton className='btn-del-product' onClick={() => deleteProduct(index)}>
+                                                <IconButton className='btn-del-product' onClick={() => deleteProduct(product.id)}>
                                                     <DeleteIcon />
                                                 </IconButton>
                                             </td>

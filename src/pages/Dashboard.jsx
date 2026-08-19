@@ -10,20 +10,24 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 
 function Dashboard(props) {
 
-    const { products, suppliers } = props;
-    const name = "Budi";
+    const { products, suppliers, user, onLogout } = props;
+    const name = user ? user.username : "Pengguna";
 
     const lowStockProducts = products.filter(product => product.stock <= 3);
     const totalProducts = products.length;
     const lowStockItem = lowStockProducts.length;
 
-    const totalAsset = products.reduce((acc, current) => acc + (current.stock * current.price), 0);
+    const totalAsset = products ? products.reduce((acc, current) => {
+        const stock = Number(current.stock) || 0;
+        const price = Number(current.price) || 0;
+        return acc + (stock * price);
+    }, 0) : 0;
 
     const totalSuppliers = suppliers.length;
 
     return (
         <div>
-            <Sidebar user={name} />
+            <Sidebar user={name} onLogout={onLogout} />
             <div className='main-content'>
                 <div className='welcome'>
                     <h1>Selamat Datang, {name}</h1>

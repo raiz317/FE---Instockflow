@@ -10,9 +10,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 
 function Suppliers(props) {
-    const name = "Budi";
-
-    const { suppliers, setSuppliers } = props;
+    const { suppliers, setSuppliers, user, onLogout } = props;
+    const name = user ? user.username : "Pengguna";
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
@@ -51,7 +50,7 @@ function Suppliers(props) {
         }))
     }
 
-    function handleFormSubmit(event) {
+    async function handleFormSubmit(event) {
         event.preventDefault();
 
         if (!addSupplierForm.supplier || !addSupplierForm.industry || !addSupplierForm.email || !addSupplierForm.phone) {
@@ -59,7 +58,29 @@ function Suppliers(props) {
             return;
         }
 
-        setSuppliers(prevSupplier => {
+        try {
+            const response = await fetch('http://localhost:3000/api/suppliers', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    supplier: addSupplierForm.supplier,
+                    industry: addSupplierForm.industry,
+                    email: addSupplierForm.email,
+                    phone: addSupplierForm.phone
+                })
+            });
+
+            if (!response.ok) throw new Error("Gagal menambah supplier");
+            const insertedSupplier = await response.json();
+
+            setSuppliers(prevSupplier => [...prevSupplier, insertedSupplier]);
+            setAddSupplierForm({ supplier: "", industry: "", email: "", phone: "" });
+            setIsModalOpen(false);
+        } catch (error) {
+            console.error(err);
+            alert("Gagal menambahkan supplier ke server.");
+        }
+        /*setSuppliers(prevSupplier => {
             return [
                 ...prevSupplier,
                 {
@@ -70,9 +91,7 @@ function Suppliers(props) {
                     phone: addSupplierForm.phone
                 }
             ]
-        });
-        setAddSupplierForm({ supplier: "", industry: "", email: "", phone: "" });
-        setIsModalOpen(false)
+        });*/
     }
 
     function openEditModal(supplier) {
@@ -88,32 +107,57 @@ function Suppliers(props) {
         }))
     }
 
-    function handleFormEditSubmit(event) {
+    async function handleFormEditSubmit(event) {
         event.preventDefault();
 
-        setSuppliers(prevSupplier => {
-            return prevSupplier.map(sup => {
-                if (sup.id === editingSupplier.id) {
-                    return {
-                        id: editingSupplier.id,
-                        supplier: editingSupplier.supplier,
-                        industry: editingSupplier.industry,
-                        email: editingSupplier.email,
-                        phone: editingSupplier.phone
-                    }
-                }
-                return sup;
+        try {
+            const response = await fetch(`http://localhost:3000/api/suppliers/${editingSupplier.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    supplier: editingSupplier.supplier,
+                    industry: editingSupplier.industry,
+                    email: editingSupplier.email,
+                    phone: editingSupplier.phone
+                })
             });
-        });
-        setIsEditModalOpen(false);
+
+            if (!response.ok) throw new Error("Gagal mengedit supplier");
+
+            setSuppliers(prevSupplier => {
+                return prevSupplier.map(sup => {
+                    if (sup.id === editingSupplier.id) {
+                        return {
+                            id: editingSupplier.id,
+                            supplier: editingSupplier.supplier,
+                            industry: editingSupplier.industry,
+                            email: editingSupplier.email,
+                            phone: editingSupplier.phone
+                        }
+                    }
+                    return sup;
+                });
+            });
+            setIsEditModalOpen(false);
+        } catch (error) {
+            console.error(err);
+            alert("Gagal memperbarui data supplier di server.");
+        }
     }
 
-    function deleteSupplier(id) {
-        setSuppliers(prevValue => {
-            return prevValue.filter((item, index) => {
-                return index !== id
-            })
-        })
+    async function deleteSupplier(id) {
+        if (!window.confirm("Apakah Anda yakin ingin menghapus supplier ini?")) return;
+
+        try {
+            const response = await fetch(`http://localhost:3000/api/suppliers/${id}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) throw new Error("Gagal menghapus supplier");
+            setSuppliers(prevValue => prevValue.filter(item => item.id !== id));
+        } catch (error) {
+            console.error(err);
+            alert("Gagal menghapus supplier dari server.");
+        }
     }
 
     const filteredSuppliers = suppliers.filter(supplier => {
@@ -127,7 +171,7 @@ function Suppliers(props) {
 
     return (
         <div>
-            <Sidebar user={name} />
+            <Sidebar user={name} onLogout={onLogout} />
             <div className='supplier-content'>
                 <div className='header-supplier'>
                     <h2>Supplier Management</h2>
@@ -207,7 +251,7 @@ function Suppliers(props) {
                                                     <IconButton className="btn-edit-supplier" onClick={() => openEditModal(supplier)}>
                                                         <EditIcon />
                                                     </IconButton>
-                                                    <IconButton className='btn-del-supplier' onClick={() => deleteSupplier(index)}>
+                                                    <IconButton className='btn-del-supplier' onClick={() => deleteSupplier(supplier.id)}>
                                                         <DeleteIcon />
                                                     </IconButton>
                                                 </td>
