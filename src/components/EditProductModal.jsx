@@ -16,12 +16,15 @@ function EditProductModal({ isEditModalOpen, setIsEditModalOpen, handleEditFormS
                     </div>
 
                     <div className="modal-form-group">
-                        <label htmlFor="editCat">Category</label>
-                        <select id="editCat" name="category" value={editingProduct.category} onChange={handleEditFormChange}>
-                            <option value="ATK">ATK</option>
-                            <option value="Elektronik">Elektronik</option>
-                            <option value="Logistik">Logistik</option>
-                        </select>
+                        <label htmlFor="prodCat">Category</label>
+                        <input
+                            id="prodCat"
+                            type="text"
+                            name="category"
+                            value={editingProduct.category}
+                            onChange={handleEditFormChange}
+                            placeholder="e.g. ATK, Elektronik, Makanan"
+                        />
                     </div>
 
                     <div className="modal-form-group">

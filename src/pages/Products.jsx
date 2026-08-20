@@ -9,7 +9,19 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 function Products(props) {
+    const { products, setProducts, suppliers, user, onLogout } = props;
+    const name = user ? user.username : "Pengguna";
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const availableSuppliers = [...new Set(suppliers.map(sup => sup.supplier))];
+    const availableCategories = products
+        ? [
+            ...new Set(
+                products
+                    .map(p => p.category ? p.category.trim().toLowerCase() : "")
+                    .filter(cat => cat !== "")
+            )
+        ].map(cat => cat.charAt(0).toUpperCase() + cat.slice(1))
+        : [];
 
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editingProduct, setEditingProduct] = useState({
@@ -21,8 +33,6 @@ function Products(props) {
         supplier: ""
     });
 
-    const { products, setProducts, suppliers, user, onLogout } = props;
-    const name = user ? user.username : "Pengguna";
     const [newProduct, setNewProduct] = useState({
         name: "",
         category: "",
@@ -223,9 +233,9 @@ function Products(props) {
                                     className="filter-select"
                                 >
                                     <option value="">Pilih Kategori</option>
-                                    <option value="atk">ATK</option>
-                                    <option value="elektronik">Elektronik</option>
-                                    <option value="logistik">Logistik</option>
+                                    {availableCategories.map((catName, index) => (
+                                        <option key={index} value={catName}>{catName}</option>
+                                    ))}
                                 </select>
                             </div>
                         </div>
@@ -240,9 +250,9 @@ function Products(props) {
                                     className="filter-select"
                                 >
                                     <option value="">Pilih Supplier</option>
-                                    {props.suppliers.map(sup => {
-                                        return <option key={sup.id} value={sup.supplier}>{sup.supplier}</option>
-                                    })}
+                                    {availableSuppliers.map((supName, index) => (
+                                        <option key={index} value={supName}>{supName}</option>
+                                    ))}
                                 </select>
                             </div>
                         </div>

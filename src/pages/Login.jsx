@@ -33,6 +33,7 @@ function Login({ setUser }) {
             const response = await fetch('http://localhost:3000/api/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify(identity)
             });
 
@@ -41,9 +42,12 @@ function Login({ setUser }) {
             if (!response.ok) {
                 throw new Error(data.message || "Gagal melakukan login");
             }
-            setUser(data.user);
-            navigate('/dashboard');
+            if (typeof setUser === "function") {
+                setUser(data.user);
+            }
+
             console.log("Navigasi ke dashboard berhasil dipicu!");
+            navigate('/dashboard');
         } catch (error) {
             alert(error.message);
         }
@@ -58,7 +62,7 @@ function Login({ setUser }) {
                         type="email"
                         value={identity.email}
                         name="email"
-                        placeholder="Enter your email or username"
+                        placeholder="Enter your email"
                         onChange={handleChange}
                         className="form-input" />
                     <input

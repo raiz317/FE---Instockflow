@@ -15,13 +15,15 @@ function EditSupplierModal({ isEditModalOpen, setIsEditModalOpen, editingSupplie
                     </div>
 
                     <div className="modal-form-group">
-                        <label htmlFor="editSupInd">Industry</label>
-                        <select id="editSupInd" name="industry" value={editingSupplier.industry} onChange={handleEditFormChange}>
-                            <option value="">Select Industry</option>
-                            <option value="Manufaktur">Manufaktur</option>
-                            <option value="Elektronik">Elektronik</option>
-                            <option value="Logistik">Logistik</option>
-                        </select>
+                        <label htmlFor="supInd">Industry</label>
+                        <input
+                            id="supInd"
+                            type="text"
+                            name="industry"
+                            value={editingSupplier.industry}
+                            onChange={handleEditFormChange}
+                            placeholder="e.g. Manufaktur, Kuliner, Tekstil"
+                        />
                     </div>
 
                     <div className="modal-form-group">

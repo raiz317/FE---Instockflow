@@ -20,7 +20,8 @@ function Suppliers(props) {
         industry: "",
         email: "",
         phone: ""
-    })
+    });
+    const uniqueIndustries = [...new Set(suppliers.map(sup => sup.industry))];
     const [editingSupplier, setEditingSupplier] = useState({
         id: "",
         supplier: "",
@@ -193,9 +194,9 @@ function Suppliers(props) {
                                     className="filter-select"
                                 >
                                     <option value="">Pilih Industry</option>
-                                    <option value="Logistik">Logistik</option>
-                                    <option value="Elektronik">Elektronik</option>
-                                    <option value="Manufaktur">Manufaktur</option>
+                                    {uniqueIndustries.map((ind, index) => (
+                                        <option key={index} value={ind}>{ind}</option>
+                                    ))}
                                 </select>
                             </div>
                         </div>

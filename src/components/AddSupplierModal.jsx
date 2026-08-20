@@ -16,12 +16,14 @@ function AddSupplierModal({ isModalOpen, setIsModalOpen, addSupplierForm, handle
 
                     <div className="modal-form-group">
                         <label htmlFor="supInd">Industry</label>
-                        <select id="supInd" name="industry" value={addSupplierForm.industry} onChange={handleFormSupplier}>
-                            <option value="">Select Industry</option>
-                            <option value="Manufaktur">Manufaktur</option>
-                            <option value="Elektronik">Elektronik</option>
-                            <option value="Logistik">Logistik</option>
-                        </select>
+                        <input
+                            id="supInd"
+                            type="text"
+                            name="industry"
+                            value={addSupplierForm.industry}
+                            onChange={handleFormSupplier}
+                            placeholder="e.g. Manufaktur, Kuliner, Tekstil"
+                        />
                     </div>
 
                     <div className="modal-form-group">

@@ -11,8 +11,7 @@ function Sidebar(props) {
 
     const handleLogoutClick = () => {
         onLogout();
-        navigate('/login');
-
+        navigate('/');
     };
 
     return (

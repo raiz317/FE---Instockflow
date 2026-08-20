@@ -16,12 +16,14 @@ function AddProductModal({ handleFormSubmit, newProduct, handleFormChange, setIs
 
                     <div className="modal-form-group">
                         <label htmlFor="prodCat">Category</label>
-                        <select id="prodCat" name="category" value={newProduct.category} onChange={handleFormChange}>
-                            <option value="">Select Category</option>
-                            <option value="ATK">ATK</option>
-                            <option value="Elektronik">Elektronik</option>
-                            <option value="Logistik">Logistik</option>
-                        </select>
+                        <input
+                            id="prodCat"
+                            type="text"
+                            name="category"
+                            value={newProduct.category}
+                            onChange={handleFormChange}
+                            placeholder="e.g. ATK, Elektronik, Makanan"
+                        />
                     </div>
 
                     <div className="modal-form-group">
