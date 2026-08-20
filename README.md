@@ -1,69 +1,81 @@
-# 📦 InStockFlow - Sistem Manajemen Inventaris & Supplier
+# 📦 InStockFlow - Sistem Manajemen Inventaris & Supplier (Full-Stack Integrated)
 
-InStockFlow adalah aplikasi web manajemen inventaris (inventory) gudang modern dan responsif yang dibangun menggunakan **React** dan **Vite**. Aplikasi ini dirancang untuk mempermudah pemilik bisnis dalam memantau sisa stok produk secara *real-time*, mengalkulasi nilai total aset gudang otomatis, serta mengelola data supplier dan barang dalam satu ekosistem antarmuka yang bersih.
+InStockFlow adalah aplikasi web manajemen inventaris (inventory) gudang modern dan responsif yang dibangun menggunakan kombinasi arsitektur **React + Vite** di sisi Front-End dan **Node.js + Express + Passport.js + MySQL** di sisi Back-End. Aplikasi ini dirancang untuk mempermudah pemantauan sisa stok secara *real-time*, mengalkulasi nilai aset otomatis, serta mengamankan data pengguna menggunakan sistem manajemen session berbasis server.
 
 ---
 
-## ✨ Fitur Utama
+## ✨ Fitur Utama & Integrasi Sistem
 
-- **Dashboard Informatif & Dinamis**: 
-  - Kartu statistik riil untuk menghitung *Total Products*, *Total Suppliers*, *Stok Kritis*, dan akumulasi *Total Aset* otomatis.
-  - Tabel pemantauan produk dengan sisa stok kritis (≤ 3 Pcs) yang dilengkapi indikator teks visual.
-- **Product Management (Form & Modals)**:
-  - Fitur tambah dan edit produk memanfaatkan *Modular Modal Components* (`AddProductModal` & `EditProductModal`).
-  - Sistem dropdown Supplier yang tersambung secara dinamis ke database supplier.
-  - Fitur hapus produk secara instan berdasarkan saringan indeks antrean.
-- **Supplier Management**:
-  - Kelola data profil supplier (Nama, Bidang Industri, Email, dan Kontak Telepon).
-  - Skema penambahan dan pembaruan data yang terisolasi dengan aman menggunakan komponen terpisah.
-- **Sistem Filter & Super Search (Real-time)**:
-  - Cari data berdasarkan kategori, bidang industri, atau ketikan kata kunci (*search bar*) yang melacak nama produk sekaligus nama supplier secara bersamaan.
-- **Desain Arsitektur Data Pusat (*Lifting State Up*)**:
-  - Sinkronisasi data mutlak antara halaman Dashboard, Products, dan Suppliers dikelola langsung di root komponen (`App.jsx`).
+- **Dashboard Informatif & Otomatis**: 
+  - Kartu statistik untuk menghitung *Total Products*, *Total Suppliers*, *Stok Kritis*, dan akumulasi *Total Aset* dinamis (dikalkulasi secara riil dari database).
+  - Tabel pemantauan produk dengan sisa stok kritis (≤ 3 Pcs) dilengkapi indikator teks visual merah tegas.
+- **Arsitektur Komponen Modular (Modals Form)**:
+  - Fitur tambah dan edit data dipisah ke dalam komponen mandiri (`AddProductModal`, `EditProductModal`, `AddSupplierModal`, `EditSupplierModal`) sehingga kode utama halaman bersih dan mudah dirawat.
+- **Manajemen Input & Saringan Dropdown Dinamis**:
+  - Input **Kategori Produk** dan bidang **Industri Supplier** berbentuk *input teks bebas*.
+  - Menggunakan trik objek `Set` di sisi Front-End untuk mengumpulkan data unik, membuat menu pilihan dropdown filter otomatis bertambah secara *real-time* mengikuti ejaan teks input database tanpa duplikasi kapital (didukung standardisasi *Title Case* & proteksi ALL CAPS khusus kata "ATK").
+- **Keamanan Ketat & Pagar Proteksi Rute (Authentication Gate)**:
+  - Terintegrasi dengan **Passport.js Session Auth** dan middleware `isAuthenticated` di sisi server.
+  - **Pagar Rute Ketat**: Pengguna yang belum login otomatis tidak bisa menembus halaman internal (`/dashboard`, `/products`, `/suppliers`) dan langsung dialihkan kembali ke rute `/login` dengan status `401 Unauthorized`.
+  - **Anti-Amnesia Session**: Saat halaman di-*refresh*, aplikasi memanfaatkan pemanggilan endpoint `/api/users/me` secara otomatis via `useEffect` di `App.jsx` untuk memverifikasi ulang status session Passport yang aktif di server, menjaga nama profil tidak berubah menjadi "Pengguna/User".
+- **Halaman Error Handler (404 Not Found)**:
+  - Menyediakan rute khusus untuk menangkap alamat URL acak baik di sisi klien (React Router) maupun fallback JSON terstruktur dari sisi server.
 - **Antarmuka 100% Responsif**:
-  - Layout CSS Murni tanpa framework CSS eksternal (Bootstrap/Tailwind). Layout bertransformasi menjadi *Top Navigation Bar* yang ramah jempol pada resolusi gawai/seluler.
+  - Layout CSS Murni tanpa framework eksternal. Diperkuat dengan media query spesifik untuk resolusi tanggung/tablet (`769px - 870px`) agar form menekuk vertikal secara simetris, serta adaptasi *Bottom Navigation Bar* otomatis pada mode HP.
 
 ---
 
-## 🛠️ Teknologi yang Digunakan
+## 🛠️ Spesifikasi Endpoint REST API (Back-End)
 
-- **Library Utama**: [React (v18+)](https://react.dev)
-- **Build Tool**: [Vite](https://vitejs.dev)
-- **Routing**: [React Router Dom](https://reactrouter.com)
-- **Icons**: [Material UI Icons (@mui/icons-material)](https://mui.com) & [Bootstrap Icons](https://getbootstrap.com)
-- **Styling**: Vanilla CSS (CSS Murni dengan skema Flexbox, Grid, dan Media Query ketat).
+Aplikasi ini berkomunikasi penuh dengan server Express melalui rute-rute endpoint berikut:
+
+### 🔐 Autentikasi & Pengguna (`Passport.js`)
+* `POST /api/register` - Mendaftarkan akun baru (dilengkapi pengecekan duplikasi email/username & enkripsi password via `bcrypt`).
+* `POST /api/login` - Masuk log sistem menggunakan strategi otentikasi lokal Passport (`email/username` dan `password`).
+* `POST /api/logout` - Keluar dari sistem, menghancurkan session server, dan membersihkan cookie.
+* `GET /api/users/me` - Memeriksa session pengguna yang sedang aktif (dipakai saat halaman di-*refresh*).
+
+### 📦 Manajemen Produk
+* `GET /api/products` - Mengambil seluruh daftar produk dari database (memerlukan login).
+* `POST /api/products` - Menambahkan produk baru (mengembalikan `insertId` otomatis).
+* `PUT /api/products/:id` - Memperbarui data produk berdasarkan ID parameternya.
+* `DELETE /api/products/:id` - Menghapus produk dari gudang secara permanen.
+
+### 🤝 Manajemen Supplier
+* `GET /api/suppliers` - Mengambil seluruh daftar supplier dari database (memerlukan login).
+* `POST /api/suppliers` - Menambahkan supplier baru.
+* `PUT /api/suppliers/:id` - Memperbarui profil supplier berdasarkan ID parameternya.
+* `DELETE /api/suppliers/:id` - Menghapus data supplier secara permanen.
 
 ---
 
-## 📁 Struktur Folder Proyek
+## 📁 Struktur Folder Proyek Klien (Front-End)
 
 ```text
 sistem-inventory/
 ├── public/
 ├── src/
-│   ├── assets/             # Aset gambar dan ikon lokal
-│   ├── components/         # Komponen modular (Sidebar, Modals, dll)
+│   ├── assets/             # Aset gambar, logo, dan ikon lokal
+│   ├── components/         # Komponen modular terpisah (Re-usable)
 │   │   ├── Sidebar.jsx
 │   │   ├── AddProductModal.jsx
 │   │   ├── EditProductModal.jsx
 │   │   ├── AddSupplierModal.jsx
 │   │   └── EditSupplierModal.jsx
 │   ├── pages/              # Halaman Utama Aplikasi
+│   │   ├── Home.jsx
 │   │   ├── Login.jsx
 │   │   ├── Register.jsx
-│   │   ├── Home.jsx
 │   │   ├── Dashboard.jsx
 │   │   ├── Products.jsx
-│   │   └── Suppliers.jsx
+│   │   ├── Suppliers.jsx
+│   │   └── NotFound.jsx     # Penangan rute 404 klien
 │   ├── styles/             # File Gaya Tampilan (CSS Murni)
 │   │   ├── sidebar.css
-|   |   ├── auth.css
 │   │   ├── dashboard.css
 │   │   └── product.css
-│   │   └── supplier.css
-│   ├── App.jsx             # Otak Pusat Data & Router Jalur Halaman
+│   ├── App.jsx             # Otak Pusat Data, Proteksi Rute (User Session Gateway)
 │   └── main.jsx
-│   └── App.css
 ├── package.json
 └── README.md
 ```
@@ -72,31 +84,24 @@ sistem-inventory/
 
 ## 🚀 Cara Menjalankan Proyek Secara Lokal
 
-Ikuti langkah-langkah di bawah ini untuk memasang dan menjalankan aplikasi ini di komputer Anda:
-
-### 1. Klon Repositori Ini
+### 1. Klon Repositori Klien
 ```bash
-git clone https://github.com/raiz317/FE---Instockflow.git
+git clone https://github.com
 cd NAMA_REPOSITORI_ANDA
 ```
 
-### 2. Instal Semua Dependensi / Pustaka Paket
+### 2. Instal Semua Dependensi Pustaka Klien
 ```bash
 npm install
 ```
 
-### 3. Jalankan Server Pengembangan Lokal (Local Development)
+### 3. Jalankan Server Pengembangan Front-End (Vite)
 ```bash
 npm run dev
 ```
-Buka peramban (browser) Anda dan akses alamat url lokal yang tertera pada terminal (biasanya `http://localhost:5173/`).
+Aplikasi klien dapat diakses melalui browser di alamat url default `http://localhost:5173/`.
 
----
-
-## 📌 Catatan Teknis Pengembangan
-
-- **Aksesibilitas Seluler**: Kustomisasi kotak dropdown `<select>` menggunakan panah kustom SVG terintegrasi untuk menjamin keseragaman tampilan visual lintas sistem operasi (Android, iOS, dan Windows Desktop).
-- **Resolusi Layar Lebar (>1450px)**: Properti pencarian teks dikunci menggunakan batas `max-width` cerdas dikombinasikan dengan `margin-left: auto` untuk memastikan tombol aksi selalu mengunci rapi di sudut paling kanan layar monitor beresolusi tinggi tanpa mengalami efek melar horizontal yang berlebihan.
+> **Catatan Penting Jalur Server**: Pastikan server Express API Back-End Anda pada port `http://localhost:3000` beserta layanan database MySQL Anda sudah aktif berjalan agar fungsi transfer data (`fetch/JSON body`) tersambung sinkron secara penuh.
 
 
 ## Tampilan Visual
