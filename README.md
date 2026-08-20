@@ -86,7 +86,7 @@ sistem-inventory/
 
 ### 1. Klon Repositori Klien
 ```bash
-git clone https://github.com
+git clone https://github.com/raiz317/FE---Instockflow.git
 cd NAMA_REPOSITORI_ANDA
 ```
 
