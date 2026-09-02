@@ -2,6 +2,8 @@
 
 InStockFlow adalah aplikasi web manajemen inventaris (inventory) gudang modern dan responsif yang dibangun menggunakan kombinasi arsitektur **React + Vite** di sisi Front-End dan **Node.js + Express + Passport.js + MySQL** di sisi Back-End. Aplikasi ini dirancang untuk mempermudah pemantauan sisa stok secara *real-time*, mengalkulasi nilai aset otomatis, serta mengamankan data pengguna menggunakan sistem manajemen session berbasis server.
 
+#### Link Backend : https://github.com/raiz317/BE-Instockflow.git
+
 ---
 
 ## ✨ Fitur Utama & Integrasi Sistem
